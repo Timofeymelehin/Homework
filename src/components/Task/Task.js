@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import classes from './task.module.scss';
 
 export default class Task extends Component {
     constructor(props) {
@@ -26,11 +27,11 @@ export default class Task extends Component {
     }
     render() {
         return (
-            <div className="task">
-                <h3 className="task__name">{this.state.name }</h3>
-                <p className="task__description">{ this.state.description}</p>
-                <p className="task__completed">Completed - {(this.state.completed ? 'true' : 'false')}{ ' ' }</p>
-                <button className="task__button"
+            <div className={classes.task}>
+                <h3 className={classes.name}>{this.state.name }</h3>
+                <p className={classes.description}>{ this.state.description}</p>
+                <p className={classes.completed}>Completed - {(this.state.completed ? 'true' : 'false')}{ ' ' }</p>
+                <button className={classes.button}
                     onClick={(e) => this.handleCompletedChange(e)}>Change status</button>
             </div>
         )

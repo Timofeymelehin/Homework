@@ -1,32 +1,33 @@
 import React, { Component } from 'react'
-import './addTask.css';
+import classes from './addTask.module.scss';
 
 export default class AddTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
             title: '',
-            description: ''
+            description: '',
         }
+
     }
 
     render() {
         return (
-            <form className="add-task__form" onSubmit={(e)=>this.props.addNewTask(e)}>
-                <h2 className="add-task__title">New Task</h2>
+            <form className={classes.form} onSubmit={(e)=>this.props.addNewTask(e)}>
+                <h2 className={classes.title}>New Task</h2>
                 <input
-                    className='add-task__add-title'
+                    className={classes.titleNew}
                     type="text"
                     onChange={(e) => this.props.handleTitleChange(e)}
                     value={this.props.newTitle}
                     placeholder="Задача" />
                 <input
-                    className='add-task__add-description'
+                    className={classes.descriptionNew}
                     type="text"
                     onChange={(e) => this.props.handleDescriptionChange(e)}
                     value={this.props.newDescription}
                     placeholder="Описание" />
-                <input className='add-task__submit' type="submit" value="Add" />
+                <input className={classes.submit} type="submit" value="Add" />
             </form>
         )
     }
