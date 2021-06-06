@@ -1,20 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App/App';
-import ThemeContext from './context';
-import './styles.css';
-
-function ChangeTheme() {
-  const [theme, setTheme] = useState('appLight')
-  return (
-    <ThemeContext.Provider value={{theme, setTheme}}>
-      <App />
-    </ThemeContext.Provider>
-  )
-}
+import App from './App';
 
 ReactDOM.render(
-  <ChangeTheme />,
+    <App />,
   document.getElementById('root')
 );
 

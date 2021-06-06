@@ -1,7 +1,5 @@
 import React from 'react'
-import Task from '../Task/Task'
-import AddTask from '../AddTask/AddTask'
-import classes from './myTodoList.module.scss';
+import Task from './Task'
 
 class MyTodoList extends React.Component {
     constructor(props) {
@@ -39,58 +37,17 @@ class MyTodoList extends React.Component {
                     completed: false,
                 },
 
-            ],
-            newTitle: '',
-            newDescription: ''
+            ]
         }
-        this.addNewTask = this.addNewTask.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    }
-
-    addNewTask(e) {
-        e.preventDefault();
-        let newId = this.state.tasks.length;
-        let oldTasks = [...this.state.tasks, {
-            id: newId,
-            name: this.state.newTitle,
-            description: this.state.newDescription,
-            completed: false
-        }];
-        this.setState({
-            tasks: oldTasks
-        })
-    }
-
-    handleTitleChange(e) {
-        e.preventDefault();
-        this.setState({
-            newTitle: e.target.value
-        })
-    }
-
-    handleDescriptionChange(e) {
-        e.preventDefault();
-        this.setState({
-            newDescription: e.target.value
-        })
     }
 
     render() {
         return (
-            <div>
-                <ul className={classes.myTodoList}>
+            <ul className="myTodoList">
                 {this.state.tasks.map(task => (
                     <li><Task id={task.id} name={task.name} description={task.description} completed={task.completed} key={task.id} /></li>
                 ))}
-                </ul>
-                <AddTask
-                    addNewTask={this.addNewTask}
-                    handleTitleChange={this.handleTitleChange}
-                    handleDescriptionChange={this.handleDescriptionChange}
-                    newTitle={this.state.newTitle}
-                    newDescription={this.state.newDescription} />
-                </div>
+            </ul>
         )
     }
 }
