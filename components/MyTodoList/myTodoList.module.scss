@@ -1,0 +1,27 @@
+.myTodoList {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.normalizeButton {
+  cursor: pointer;
+  width: 300px;
+  margin: 20px auto;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: orange;
+  color: black;
+  border-radius: 15px;
+
+  &:hover {
+    background: blue;
+    color: white;
+
+  }
+}
