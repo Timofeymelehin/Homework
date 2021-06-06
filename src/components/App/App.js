@@ -1,58 +1,39 @@
 import MyTodoList from '../MyTodoList/MyTodoList';
 import classes from './App.module.scss';
-import React, { useState, useContext } from 'react'
-import ThemeContext from '../../context.js'
-import StateContext from '../../anotherContext.js'
+import React from 'react'
+import { connect } from 'react-redux';
+import { addNewProject, changeActiveId, normalizeState } from "../../redux";
 
-function App() {
-  const { theme, setTheme } = useContext(ThemeContext)
-  const { projects, activeProjectId, setActiveId, setProjects } = useContext(StateContext)
-  const [check, setCheck] = useState(false)
-  
-  const change = () => {
-    setTheme(theme === 'appLight' ? 'appDark' : 'appLight')
-    setCheck(!check)
-  }
-
-  const normalizeState = (projects) => {
-    let taskCounterId = 1;
-    let projectById = {};
-    let tasksByIds = {};
-    for (let i = 0; i < projects.length; i++) {
-      let tasksArray = [];
-      for (let j = 0; j < projects[i].tasks.length; j++) {
-        tasksArray.push(taskCounterId);
-        tasksByIds[taskCounterId] = {
-          id: taskCounterId,
-          name: projects[i].tasks[j].name,
-          description: projects[i].tasks[j].description,
-          completed: projects[i].tasks[j].completed,
-        }
-        taskCounterId++;
-      }
-      projectById[i+1] = {
-        id: i + 1,
-        name: projects[i].name,
-        tasksIds: [...tasksArray]
-      }
-    }
-    return { projectById, tasksByIds };
-  }
+function App({projects, activeProjectId, changeActiveId, addNewProject, normalizeState }) {
 
   return (
-    <div className={check ? classes.appLight : classes.appDark}>
+    <div className={classes.appLight}>
       <h1 className={classes.app__title}>Hello and Welcome! This is the Task Tracker!</h1>
-      <div className={classes.changeTheme}
-        onClick={()=>change()} >Chagne theme to {check ? 'dark' : 'light'} </div>
       <MyTodoList
         projects={projects}
         activeProjectId={activeProjectId}
-        setActiveId={setActiveId}
-        setProjects={setProjects}
+        changeActiveId={changeActiveId}
+        addNewProject={addNewProject}
         normalizeState={normalizeState}
       />
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    projects: state.toDo.projects,
+    activeProjectId: state.toDo.activeProjectId,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  addNewProject: (newTitle) => dispatch(addNewProject(newTitle)),
+  changeActiveId: (newId) => dispatch(changeActiveId(newId)),
+  normalizeState : (projects) => dispatch(normalizeState(projects)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
