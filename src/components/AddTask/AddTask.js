@@ -8,7 +8,6 @@ export default class AddTask extends Component {
             title: '',
             description: '',
         }
-
     }
 
     render() {

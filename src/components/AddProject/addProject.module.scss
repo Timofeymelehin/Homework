@@ -10,11 +10,9 @@
     margin: 10px auto;
     color: orange;
     font-size: 22px;
-    text-align: center;
   }
 
-  .titleNew,
-  .descriptionNew {
+  .titleNew {
     display: block;
     margin: 10px auto;
     min-width: 250px;
@@ -34,10 +32,8 @@
   }
 
   .submit {
-    display: block;
-    width: 100px;
+    width: 60px;
     height: 26px;
-    margin: 10px auto;
     cursor: pointer;
     background: deepskyblue;
     color: white;

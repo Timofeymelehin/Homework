@@ -65,9 +65,12 @@ code {
 }
 
 .appDark {
+  display: block;
   background: black;
   color: white;
   text-align: center;
+  height: 100%;
+  padding-bottom: 200px;
 
   .app__title {
     display: block;
