@@ -1,10 +1,30 @@
 import MyTodoList from '../MyTodoList/MyTodoList';
 import classes from './App.module.scss';
-import React from 'react'
+import React, {useEffect} from 'react'
 import { connect } from 'react-redux';
 import { addNewProject, changeActiveId, normalizeState } from "../../redux";
 
-function App({projects, activeProjectId, changeActiveId, addNewProject, normalizeState }) {
+import APIService from '../../API/ApiService';
+import { setProjects } from '../../redux/toDo/toDoActions';
+
+function App({projects, activeProjectId, changeActiveId, addNewProject, normalizeState, setProjects }) {
+
+  useEffect(() => {
+    if (projects === null) {
+      APIService.getProjects().then(projects => {
+        setProjects(projects)
+        normalizeState()
+      })
+    }
+  }, [projects])
+
+  const handleAddProject = (name) => {
+    APIService.addProject(name).then(project => {
+      console.log('RESPONSE=',project)
+      addNewProject(name, project.id)
+      normalizeState()
+    })
+  }
 
   return (
     <div className={classes.appLight}>
@@ -13,7 +33,7 @@ function App({projects, activeProjectId, changeActiveId, addNewProject, normaliz
         projects={projects}
         activeProjectId={activeProjectId}
         changeActiveId={changeActiveId}
-        addNewProject={addNewProject}
+        addNewProject={handleAddProject}
         normalizeState={normalizeState}
       />
     </div>
@@ -28,9 +48,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  addNewProject: (newTitle) => dispatch(addNewProject(newTitle)),
+  addNewProject: (newTitle, id) => dispatch(addNewProject(newTitle, id)),
   changeActiveId: (newId) => dispatch(changeActiveId(newId)),
-  normalizeState : (projects) => dispatch(normalizeState(projects)),
+  normalizeState : () => dispatch(normalizeState()),
+  setProjects: (projects) => dispatch(setProjects(projects))
 })
 
 export default connect(

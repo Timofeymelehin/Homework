@@ -5,7 +5,9 @@ const AddTask = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.addNewTask(props.newTitle, props.newDescription);
+        if (props.newTitle !== "" & props.newDescription !== "") props.addNewTask(props.newTitle, props.newDescription);
+        props.handleTitleChange({target: {value: ''}})
+        props.handleDescriptionChange({target: {value: ''}})
     }
 
         return (
