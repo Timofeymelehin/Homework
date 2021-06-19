@@ -14,7 +14,15 @@ export default class Task extends Component {
 
     handleCompletedChange(e) {
         e.preventDefault();
-        console.log(`Task ${ this.state.id } completed status = ${ this.state.completed }`);
+        if (this.state.completed) {
+            this.setState({
+                completed: false
+            })
+        } else {
+            this.setState({
+                completed: true
+            })
+        }
     }
     render() {
         return (
@@ -23,7 +31,7 @@ export default class Task extends Component {
                 <p className="task__description">{ this.state.description}</p>
                 <p className="task__completed">Completed - {(this.state.completed ? 'true' : 'false')}{ ' ' }</p>
                 <button className="task__button"
-                    onClick={(e) => this.handleCompletedChange(e)}>Button to click</button>
+                    onClick={(e) => this.handleCompletedChange(e)}>Change status</button>
             </div>
         )
     }
