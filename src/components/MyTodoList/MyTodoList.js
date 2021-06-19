@@ -1,6 +1,7 @@
 import React from 'react'
 import Task from '../Task/Task'
 import AddTask from '../AddTask/AddTask'
+import classes from './myTodoList.module.scss';
 
 class MyTodoList extends React.Component {
     constructor(props) {
@@ -78,7 +79,7 @@ class MyTodoList extends React.Component {
     render() {
         return (
             <div>
-            <ul className="myTodoList">
+                <ul className={classes.myTodoList}>
                 {this.state.tasks.map(task => (
                     <li><Task id={task.id} name={task.name} description={task.description} completed={task.completed} key={task.id} /></li>
                 ))}
