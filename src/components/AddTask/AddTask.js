@@ -1,33 +1,31 @@
-import React, { Component } from 'react'
+import React from 'react'
 import classes from './addTask.module.scss';
 
-export default class AddTask extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: '',
-            description: '',
-        }
+const AddTask = (props) => {
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        props.addNewTask(props.newTitle, props.newDescription);
     }
 
-    render() {
         return (
-            <form className={classes.form} onSubmit={(e)=>this.props.addNewTask(e)}>
+            <form className={classes.form} onSubmit={handleSubmit} >
                 <h2 className={classes.title}>New Task</h2>
                 <input
                     className={classes.titleNew}
                     type="text"
-                    onChange={(e) => this.props.handleTitleChange(e)}
-                    value={this.props.newTitle}
+                    onChange={(e) => props.handleTitleChange(e)}
+                    value={props.newTitle}
                     placeholder="Задача" />
                 <input
                     className={classes.descriptionNew}
                     type="text"
-                    onChange={(e) => this.props.handleDescriptionChange(e)}
-                    value={this.props.newDescription}
+                    onChange={(e) => props.handleDescriptionChange(e)}
+                    value={props.newDescription}
                     placeholder="Описание" />
                 <input className={classes.submit} type="submit" value="Add" />
             </form>
         )
-    }
 }
+
+export default AddTask

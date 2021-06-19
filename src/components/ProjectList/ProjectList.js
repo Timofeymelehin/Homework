@@ -5,8 +5,10 @@ import classes from './projectList.module.scss'
 import {
     Link
 } from "react-router-dom";
+import { connect } from 'react-redux';
+import { addNewTask, changeActiveId } from "../../redux";
 
-export default class ProjectList extends Component {
+class ProjectList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,29 +19,8 @@ export default class ProjectList extends Component {
             newDescription: '',
             projects: this.props.projects,
         };
-        this.addNewTask = this.addNewTask.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    }
-
-    addNewTask(e) {
-        e.preventDefault();
-        let newId = this.state.tasks.length + 1;
-        let newTasks = [...this.state.tasks, {
-            id: newId,
-            name: this.state.newTitle,
-            description: this.state.newDescription,
-            completed: false
-        }]
-        let newProjects = [...this.state.projects]
-        newProjects[this.props.activeProjectId - 1].tasks = newTasks
-        this.setState({
-            tasks: newTasks,
-            projects: newProjects,
-            newTitle: '',
-            newDescription: '',
-        })
-        this.props.setProjects(this.state.projects)
     }
 
     handleTitleChange(e) {
@@ -70,7 +51,7 @@ export default class ProjectList extends Component {
 
                 }
                 <AddTask
-                    addNewTask={this.addNewTask}
+                    addNewTask={this.props.addNewTask}
                     handleTitleChange={this.handleTitleChange}
                     handleDescriptionChange={this.handleDescriptionChange}
                     newTitle={this.state.newTitle}
@@ -79,3 +60,21 @@ export default class ProjectList extends Component {
         )
     }
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    projects: state.toDo.projects,
+    activeProjectId: state.toDo.activeProjectId,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  changeActiveId: (newId) => dispatch(changeActiveId(newId)),
+  addNewTask: (newTitle, newDescription) => dispatch(addNewTask(newTitle, newDescription)),
+  })
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectList);
