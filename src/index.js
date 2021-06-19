@@ -6,7 +6,8 @@ import './styles.css';
 import {
   BrowserRouter,
   Route,
-  Switch
+  Switch,
+  Redirect
 } from "react-router-dom";
 import { Provider } from 'react-redux';
 import store from "./redux/store";
@@ -17,7 +18,8 @@ function AppFullEdition() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={App} />
-          <Route path="/project" component={ProjectList} />
+          <Route exact path="/project/:id" render={(props) => <ProjectList {...props}/>} />
+          <Route  path="/" render={() => <Redirect to='/'></Redirect>} />
         </Switch>
       </BrowserRouter>
       </Provider>

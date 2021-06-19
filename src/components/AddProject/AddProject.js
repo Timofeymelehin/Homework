@@ -5,7 +5,8 @@ const AddProject = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.addNewProject(props.newTitle);
+        if (props.newTitle !== "") props.addNewProject(props.newTitle);
+        props.handleTitleChange({target: {value: ''}})
     }
 
         return (

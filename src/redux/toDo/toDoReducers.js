@@ -2,85 +2,58 @@ import {
   ADD_NEW_TASK,
   ADD_NEW_PROJECT,
   CHANGE_ACTIVE_ID,
-  GET_NORMALIZE_STATE
+  GET_NORMALIZE_STATE,
+  CHANGE_TASK,
+  SET_PROJECTS,
+  SET_TASKS
 } from "./toDoTypes";
 
 const initialState = {
-  activeProjectId: 1,
-  normState: {},
-  projects : [
-    {
-      id: 1,
-      name: 'Home',
-      tasks: [
-        {
-          id: 1,
-          name: 'Throw out the trash',
-          description: 'Collect all the unnecessary things. Put them in a garbage bag. Throw it out',
-          completed: true,
-        },
-        {
-          id: 2,
-          name: 'Prepare dinner',
-          description: 'Peel the potatoes, fry and cut the cucumber',
-          completed: false,
-        },
-        {
-          id: 3,
-          name: 'Walk the dog',
-          description: 'Find the leash, find the dog, nuzzle the leash and go outside with the dog',
-          completed: true,
-        },
-
-      ]
-    },
-    {
-      id: 2,
-      name: 'Health',
-      tasks: [
-        {
-          id: 1,
-          name: 'Go to the gym',
-          description: 'Collect water, collect a bag of things and walk to the gym',
-          completed: false,
-        },
-      ]
-    },
-    {
-      id: 3,
-      name: 'Car',
-      tasks: [
-        {
-          id: 1,
-          name: 'Change the wheels to summer ones',
-          description: 'Go to the garage, get replacement tires, take off the winter tires, put on the summer tires',
-          completed: false,
-        },
-      ]
-    },
-  ],
+  activeProjectId: null,
+  normState: {
+    projectById: {},
+    tasksByIds: {}
+  },
+  projects : null,
 };
 
 const toDoReducer = (state = initialState, action) => {
+  console.log(action)
   switch (action.type) {
     case ADD_NEW_TASK:
-      let newId = state.projects[state.activeProjectId - 1].tasks.length + 1;
-      let newTasks = [...state.projects[state.activeProjectId - 1].tasks, {
-        id: newId,
-        name: action.newTitle,
-        description: action.newDescription,
-        completed: false
-      }]
-      let newProjects = [...state.projects]
-      newProjects[state.activeProjectId - 1].tasks = [...newTasks]
+      let newTasks = [...state.projects.filter(project => project.id === action.activeProjectId)[0].tasks, action.task]
+      let newProjects = state.projects.map(project => project.id === action.activeProjectId ? {...project, tasks: newTasks} : {...project})
+      // newProjects[state.activeProjectId - 1].tasks = [...newTasks]
 
       return {
         ...state,
         projects: [...newProjects],
       };
+    
+    case CHANGE_TASK: {
+      console.log(action.activeProjectId)
+      let newProjects = [...state.projects]
+      let index = state.projects.findIndex(project => project.id === action.activeProjectId)
+      newProjects[index].tasks = newProjects[index].tasks.map(task => task.id === action.task.id ? action.task : task);
+      return {
+        ...state,
+        projects: newProjects
+      }
+    }
 
+    case SET_TASKS: {
+      let newProjects = [...state.projects];
+      console.log(action.projectId)
+      newProjects[newProjects.findIndex(project => project.id == action.projectId)].tasks = action.tasks;
+      return {
+        ...state,
+        projects: newProjects
+      }
+
+    }
+    
     case ADD_NEW_PROJECT:
-      let newProjectId = state.projects.length + 1;
+      let newProjectId = action.projectId;
       let newProjectsToAdd = [...state.projects, {
             id: newProjectId,
             name: action.newTitle,
@@ -97,30 +70,37 @@ const toDoReducer = (state = initialState, action) => {
         activeProjectId: action.activeId
 
       };
+      
+    case SET_PROJECTS: {
+      return {
+        ...state,
+        projects: action.projects.map(project => ({...project, tasks: null}))
+      }
+    }
 
     case GET_NORMALIZE_STATE:
-      let taskCounterId = 1;
       let projectById = {};
       let tasksByIds = {};
+      console.log(state.projects)
       for (let i = 0; i < state.projects.length; i++) {
         let tasksArray = [];
-        for (let j = 0; j < state.projects[i].tasks.length; j++) {
-          tasksArray.push(taskCounterId);
-          tasksByIds[taskCounterId] = {
-            id: taskCounterId,
-            name: state.projects[i].tasks[j].name,
-            description: state.projects[i].tasks[j].description,
-            completed: state.projects[i].tasks[j].completed,
+        if (state.projects[i].tasks) {
+          for (let j = 0; j < state.projects[i].tasks.length; j++) {
+            tasksArray.push(state.projects[i].tasks[j].id);
+            tasksByIds[state.projects[i].tasks[j].id] = {
+              id: state.projects[i].tasks[j].id,
+              name: state.projects[i].tasks[j].name,
+              description: state.projects[i].tasks[j].description,
+              completed: state.projects[i].tasks[j].completed,
+            }
           }
-          taskCounterId++;
         }
-        projectById[i+1] = {
-          id: i + 1,
+        projectById[state.projects[i].id] = {
+          id: state.projects[i].id,
           name: state.projects[i].name,
           tasksIds: [...tasksArray]
         }
       }
-      console.log( {projectById, tasksByIds})
       return {
         ...state,
         normState: {projectById, tasksByIds}

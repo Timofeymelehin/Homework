@@ -2,5 +2,8 @@ export {
   addNewTask,
   addNewProject,
   changeActiveId,
-  normalizeState
+  normalizeState,
+  changeTask,
+  setTasks,
+  setProjects
 } from "./toDo/toDoActions";

@@ -2,3 +2,6 @@ export const ADD_NEW_TASK = "ADD_NEW_TASK";
 export const ADD_NEW_PROJECT= "ADD_NEW_PROJECT";
 export const CHANGE_ACTIVE_ID = "CHANGE_ACTIVE_ID";
 export const GET_NORMALIZE_STATE = "GET_NORMALIZE_STATE";
+export const CHANGE_TASK = 'CHANGE_TASK'
+export const SET_PROJECTS = 'SET_PROJECTS';
+export const SET_TASKS = 'SET_TASKS';
